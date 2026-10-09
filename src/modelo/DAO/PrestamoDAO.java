@@ -100,6 +100,24 @@ public class PrestamoDAO {
         }
         return null;
     }
+    public Prestamo obtenerPorEstado(String estado) {
+        String sql = "SELECT id, estado "
+                + "FROM prestamos WHERE estado = ?";
+
+        try (Connection con = ConexionBD.obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, estado);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearPrestamo(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar préstamo por estado: " + e.getMessage());
+        }
+        return null;
+    }
 
     public List<Prestamo> obtenerPorIdCliente(int idCliente) {
         List<Prestamo> lista = new ArrayList<>();

@@ -8,7 +8,6 @@ import modelo.DAO.EmpleadoDAO;
 import modelo.DAO.PrestamoDAO;
 import modelo.Servicios.PrestamoServicio;
 import modelo.DAO.PagoDAO;
-
 import java.util.List;
 
 public class MenuPrestamos {
@@ -30,7 +29,8 @@ public class MenuPrestamos {
             System.out.println("5. Actualizar préstamo");
             System.out.println("6. Eliminar préstamo");
             System.out.println("7. Cambiar estado");
-            System.out.println("8. Volver al Menú Principal");
+            System.out.println("8. Entrar a gestor de prestamos");
+            System.out.println("9. Volver al Menú Principal");
 
             opcion = ConsolUtils.leerEntero("Seleccione una opción: ");
 
@@ -57,6 +57,8 @@ public class MenuPrestamos {
                     cambiarEstado();
                     break;
                 case 8:
+                    Gestorprestamos.mostrar();
+                case 9:
                     System.out.println("Volviendo al menú principal...");
                     break;
                 default:
@@ -115,7 +117,7 @@ public class MenuPrestamos {
         return empleado;
     }
 
-    private static void crearPrestamo() {
+    public  static void crearPrestamo() {
         System.out.println("\n--- Crear Nuevo Préstamo ---");
 
         double monto = ConsolUtils.leerDouble("Monto: ");
@@ -127,8 +129,8 @@ public class MenuPrestamos {
             return;
         }
 
-        if (interes < 0) {
-            System.out.println("El interés no puede ser negativo.");
+        if (interes <= 0) {
+            System.out.println("El interés no puede ser negativo ni 0.");
             return;
         }
 
@@ -151,14 +153,15 @@ public class MenuPrestamos {
         prestamoServicio.calcularDatosPrestamo(nuevo);
 
         if (prestamoDAO.guardar(nuevo)) {
-            System.out.println("¡Préstamo creado con éxito para " + cliente.getNombre()
+            System.out.println("==REGISTRO DE PRÉSTAMOS==");
+            System.out.println("¡Préstamo registrado correctamentepara " + cliente.getNombre()
                     + " (asesor: " + empleado.getNombre() + ")!");
         } else {
             System.out.println("Error al registrar el préstamo en la base de datos.");
         }
     }
 
-    private static void listarPrestamos() {
+    public static void listarPrestamos() {
         System.out.println("\n--- Listado General de Préstamos ---");
         List<Prestamo> lista = prestamoDAO.obtenerTodos();
 
